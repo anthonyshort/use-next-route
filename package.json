@@ -1,0 +1,26 @@
+{
+  "name": "use-next-route",
+  "version": "1.0.0",
+  "description": "Next routing using React hooks",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Anthony Short",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/next": "^8.0.1",
+    "@types/react": "^16.8.6",
+    "next": "^8.0.3",
+    "react": "^16.8.3",
+    "typescript": "^3.3.3333"
+  },
+  "peerDependencies": {
+    "next": "^8.0.3",
+    "react": ">=16.8.3"
+  },
+  "dependencies": {
+    "query-string": "^6.3.0"
+  }
+}
