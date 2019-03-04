@@ -6,19 +6,19 @@ React hook to create a route link
 
 import { useRoute } from 'use-next-route'
 
-function Page() {
+function ProjectsLink() {
   const { href, onClick } = useRoute('/projects')
   return (
-    <a href={href} onClick={onClick}>Click me!</a>
+    <a href={href} onClick={onClick}>Projects</a>
   )
 }
-
-// <a href="/dashboard/projects">Go to projects</a>
 ```
 
 ## Why
 
-As a Next app grows it becomes hard to manage link to all of the different routes. The `next/link` component has an awkward API, so you end up dropping down to use the singleton `next/router` in most cases. The router and link also don't have a concept of a "prefix", which is required when mounting a Next app in a sub-directory. 
+* As a Next app grows it becomes hard to manage link to all of the different routes. 
+* The `next/link` component has an awkward API that was designed pre-hooks.
+* The router and link also don't have a concept of a "prefix", which is required when mounting a Next app in a sub-directory. 
 
 ## Setup
 
@@ -49,15 +49,11 @@ This is similar to the assetPrefix option.
 
 ## API
 
-```
-import {
-  useRoute,
-  useRouteContext,
-  RouteProvider,
-} from 'use-next-route'
-```
-
 ### `useRoute(route: UrlObject | string, options: RouteOptions)`
+
+```ts
+import { useRoute } from 'use-next-route'
+```
 
 Returns an object with the following properties:
 
@@ -200,6 +196,10 @@ function Page({ project }) {
 ```
 
 ### `RouteProvider`
+
+```ts
+import { RouteProvider } from 'use-next-route'
+```
 
 Add the context to you app to inject the Next router. This is required for `useRoute` to work. 
 
