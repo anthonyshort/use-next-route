@@ -51,12 +51,10 @@ This is similar to the assetPrefix option.
 
 ```
 import {
-  RouteOptions,
-  Route,
   useRoute,
   useRouteContext,
   RouteProvider,
-} from 'use-next-routes'
+} from 'use-next-route'
 ```
 
 ### `useRoute(route: UrlObject | string, options: RouteOptions)`
@@ -73,18 +71,19 @@ You won't use `next/link` or `next/router` directly anymore. Instead you can use
 * Buttons: You can use the `onClick` property
 * Links: You can use the `href` property and the `onClick` property. The `href` will make it a valid HTML link, allowing users to open to the link in a new tab/window and making it crawlable. Adding the `onClick` prop will trigger a `Router.push` for you automatically.
 
-#### `UrlObject`
+#### Types 
+##### `UrlObject`
 
 * `pathname`: Absolute path to the Next route
 * `query`: Object of key/value pairs that will be appended to the url as a query string.
 
-#### `RouteOptions`
+##### `RouteOptions`
 
 * `prefetch`: Prefetch the route. This is disabled by default so you need to opt-in
 * `replace`: Uses `replace` instead of `push`. 
 * `as`: Allows you to override the url in the location bar. If you're using `routePrefix` this is taken care of for you, but if you want to use a custom alias you can instead. The `routePrefix` will still be applied.
 
-Examples:
+#### Examples:
 
 ```ts
 import { useRoute } from 'use-next-route'
@@ -140,19 +139,21 @@ export default ProjectPage
 Using a custom hook:
 
 ```ts
-import { useRoute } from 'use-next-route'
+import { useRoute, RouteOptions } from 'use-next-route'
 
-function useProjectRoute(projectId: string) {
+function useProjectRoute(projectId: string, options?: RouteOptions) {
   return useRoute({
     pathname: '/project/details',
     query: {
       id: projectId
     }
-  })
+  }, options)
 }
 
 function ProjectPage(props) {
-  const projectRoute = useProjectRoute(props.project.id)
+  const projectRoute = useProjectRoute(props.project.id, {
+    prefetch: true
+  })
   return (
     <a href={projectRoute.href} onClick={projectRoute.onClick}>{props.project.name}</a>
   )
@@ -161,32 +162,7 @@ function ProjectPage(props) {
 export default ProjectPage
 ```
 
-You can also provide some options
-
-### `RouteProvider`
-
-Add the context to you app to inject the Next router. This is required for `useRoute` to work. 
-
-```ts
-import { RouteProvider } from 'use-next-route'
-import { withRouter } from 'next/router'
-
-function ProjectsPage(props) {
-  return (
-    <RouteProvider route={props.router.route} routePrefix="/dashboard">
-      <div>My Projects</div>
-    </RouteProvider>
-  )
-}
-
-export default withRouter(ProjectsPage)
-```
-
-## Patterns
-
-### Centralized routes
-
-You can create hooks for specific pages in your app so you're not creating the same routes everywhere:
+Extracting out the custom hooks into a `routes` file:
 
 ```ts
 import { RouteOptions, useRoute } from 'use-next-route'
@@ -206,15 +182,38 @@ export function useSettingsRoute(options?: RouteOptions) {
 }
 ```
 
-Then you can use the route in any component:
-
 ```ts
-import { useProjectRoute } from './routes'
+import { useProjectRoute, useSettingsRoute } from './routes'
 
 function Page({ project }) {
-  const { href, onClick, isActive } = useProjectRoute(project.id)
+  const projectRoute = useProjectRoute(project.id, {
+    prefetch: true
+  })
+  const settingsRoute = useSettingsRoute()
   return (
-    <a href={href} onClick={onClick}>{project.name}</a>
+    <>
+      <a href={projectRoute.href} onClick={projectRoute.onClick}>{project.name}</a>
+      <a href={settingsRoute.href} onClick={settingsRoute.onClick}>Settings</a>
+    </>
   )
 }
+```
+
+### `RouteProvider`
+
+Add the context to you app to inject the Next router. This is required for `useRoute` to work. 
+
+```ts
+import { RouteProvider } from 'use-next-route'
+import { withRouter } from 'next/router'
+
+function ProjectsPage(props) {
+  return (
+    <RouteProvider route={props.router.route} routePrefix="/dashboard">
+      <div>My Projects</div>
+    </RouteProvider>
+  )
+}
+
+export default withRouter(ProjectsPage)
 ```
