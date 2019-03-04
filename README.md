@@ -1,6 +1,6 @@
 # use-next-route
 
-React hook to create a route link
+React hook for easy routing within a Next.js app. 
 
 ```ts
 
