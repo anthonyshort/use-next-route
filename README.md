@@ -7,9 +7,9 @@ React hook for easy routing within a Next.js app.
 import { useRoute } from 'use-next-route'
 
 function ProjectsLink() {
-  const { href, onClick } = useRoute('/projects')
+  const { bind } = useRoute('/projects')
   return (
-    <a href={href} onClick={onClick}>Projects</a>
+    <a {...bind}>Projects</a>
   )
 }
 ```
@@ -59,6 +59,7 @@ Returns an object with the following properties:
 
 * `href`: URL string for the route. Usually used for adding a `href` attribute to links.
 * `onClick`: This will navigate to the route and handle preventing the default mouse event if needed.
+* `bind`: Object containing `href` and `onClick`. Useful for props spreading.
 * `isActive`: If the current browser location starts with the `href`. Used for active states.
 * `navigate`: Navigate to the route.
 

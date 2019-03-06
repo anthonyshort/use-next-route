@@ -133,6 +133,7 @@ function useRoute(url: UrlObject | string, options: RouteOptions = {}) {
   }
 
   return {
+    bind: { onClick, href: aliasHref },
     onClick,
     href: aliasHref,
     isActive,
